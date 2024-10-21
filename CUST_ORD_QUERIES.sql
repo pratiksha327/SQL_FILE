@@ -74,7 +74,7 @@ Q9. Number of customers are inactive (that have not ordered in the last 60 days)
    WHERE CUSTOMER_KEY NOT IN (SELECT CUSTOMER_KEY FROM RecentOrders);
 
 
-Q10. Growth Rate  (%) in Orders (from Nov’15 to July’16)
+Q10. Growth Rate  (%) in Orders (from Novâ€™15 to Julyâ€™16)
 
  --- Count orders in November 2015
    WITH OrdersNov2015 AS (
@@ -304,7 +304,7 @@ Q27. Number of orders by month based on delivery status
 	 WHERE O.CUSTOMER_KEY = C.CUSTOMER_KEY
 	 GROUP BY FORMAT(O.ORDER_DATE,'MMMM'), O.DELIVERY_STATUS 
 
-Q28. Month-on-month growth in OrderCount and Revenue (from Nov’15 to July’16)
+Q28. Month-on-month growth in OrderCount and Revenue (from Novâ€™15 to Julyâ€™16)
 
 -- Calculate order count and total revenue for each month
 WITH MonthlyData AS (
