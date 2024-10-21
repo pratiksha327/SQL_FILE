@@ -10,11 +10,11 @@ Q2. Total Revenue (order value) by top 25 Customers
 	FROM (SELECT CUSTOMER_KEY, SUM(ORDER_TOTAL) AS TOTAL_REVENUE
 	      FROM ORDERS
 	      GROUP BY CUSTOMER_KEY) AS SubQuery
-	ORDER BY TOTAL_REVENUE DESC;
+     ORDER BY TOTAL_REVENUE DESC;
 
 Q3. Total number of orders
     SELECT  COUNT(*) AS TOTAL_ORDER_NUMBER
-	FROM ORDERS;
+    FROM ORDERS;
 
 Q4. Total orders by top 10 customers
     SELECT TOP 10 CUSTOMER_KEY, TOTAL_ORDERS 
@@ -23,14 +23,14 @@ Q4. Total orders by top 10 customers
 	      ,CUSTOMERS C
 	      WHERE O.CUSTOMER_KEY = C.CUSTOMER_KEY
 	      GROUP BY C.CUSTOMER_KEY) AS SubQuery
-	ORDER BY TOTAL_ORDERS  DESC;
+    ORDER BY TOTAL_ORDERS  DESC;
 
 Q5. Number of customers ordered once
     SELECT COUNT(CUSTOMER_KEY) AS NUMBER_OF_CUSTOMERS
 	FROM (SELECT CUSTOMER_KEY, COUNT(*)  AS ORDER_NUMBER 
 	      FROM ORDERS
 	      GROUP BY CUSTOMER_KEY ) AS SubQuery 
-	WHERE ORDER_NUMBER = 1;
+     WHERE ORDER_NUMBER = 1;
 
 Q6. Number of customers ordered multiple times
     SELECT COUNT(CUSTOMER_KEY) AS CUSTOMERS_ORDERED_MULTIPLES
@@ -137,14 +137,14 @@ Q13. Which location have maximum customers?
 
 Q14. How many orders are returned?
      SELECT count(*) as NUMBER_OF_ORDERS_RETURNED
-	 FROM ORDERS
-	 WHERE ORDER_TOTAL < 0;
+     FROM ORDERS
+     WHERE ORDER_TOTAL < 0;
 
 Q15. Which Acquisition channel is more efficient in terms of customer acquisition?
      SELECT TOP 1 ACQUIRED_CHANNEL, COUNT(ACQUIRED_CHANNEL) AS COUNT_OF_ACQUIRED_CHANNEL
-	 FROM CUSTOMERS
-	 GROUP BY ACQUIRED_CHANNEL
-	 ORDER BY COUNT_OF_ACQUIRED_CHANNEL DESC;
+     FROM CUSTOMERS
+     GROUP BY ACQUIRED_CHANNEL
+     ORDER BY COUNT_OF_ACQUIRED_CHANNEL DESC;
 
 Q16. Which location having more orders with discount amount?
      SELECT TOP 1 LOCATION 
@@ -156,7 +156,7 @@ Q16. Which location having more orders with discount amount?
 	      AND O.DISCOUNT <> 0
 	      GROUP BY C.LOCATION
       )  AS Subquery
-	 ORDER BY MAX_ORDER_NUMBER DESC;
+     ORDER BY MAX_ORDER_NUMBER DESC;
 
 Q17. Which location having maximum orders delivered in delay?
      SELECT TOP 1  LOCATION
@@ -166,18 +166,18 @@ Q17. Which location having maximum orders delivered in delay?
 	       WHERE O.DELIVERY_STATUS  = 'LATE'
 	       GROUP BY LOCATION
 	 )AS Subquery
-	 ORDER BY NUMBER_OF_ORDERS DESC;
+     ORDER BY NUMBER_OF_ORDERS DESC;
 
 
 Q18. What is the percentage of customers who are males acquired by APP channel?  
     SELECT(COUNT(CASE WHEN GENDER ='M' AND ACQUIRED_CHANNEL ='APP' THEN 1 END) / 100 * COUNT(*)) AS
 	   PercentageOfMaleCustomersAcquiredByAPP
-	FROM CUSTOMERS;
+    FROM CUSTOMERS;
 
 Q19. What is the percentage of orders got canceled? 
      SELECT(COUNT(CASE WHEN ORDER_STATUS = 'CANCELLED' THEN 1 END) * 100/ COUNT(*)) AS 
 	      PercentageOfOrdersGotCancelled
-	 FROM ORDERS;
+     FROM ORDERS;
 
 Q20. What is the percentage of orders done by happy customers?
 
@@ -185,7 +185,7 @@ Q20. What is the percentage of orders done by happy customers?
 
     WITH HappyCustomers
 	AS(
-       SELECT CUSTOMER_KEY
+           SELECT CUSTOMER_KEY
 	   FROM CUSTOMERS C
 	   WHERE REFERRED_OTHER_CUSTOMERS = 1
    ),
@@ -194,7 +194,7 @@ Q20. What is the percentage of orders done by happy customers?
 
    OrdersByHappyCustomers AS
    (
-    SELECT O.ORDER_NUMBER
+        SELECT O.ORDER_NUMBER
 	FROM HappyCustomers H
 	, ORDERS O
 	WHERE H.CUSTOMER_KEY = O.CUSTOMER_KEY
@@ -204,7 +204,7 @@ Q20. What is the percentage of orders done by happy customers?
 
    SELECT
     (COUNT(O.ORDER_NUMBER) * 100/ (SELECT COUNT(*) FROM ORDERS O))
-    AS PercentageOfHappyCustomers
+       AS PercentageOfHappyCustomers
    from OrdersByHappyCustomers O;
 
 
@@ -216,16 +216,16 @@ Q21. Which Location having maximum customers through reference?
 	       WHERE REFERRED_OTHER_CUSTOMERS <> 0
 		   GROUP BY LOCATION
      ) AS Subquery
-	 ORDER BY MAX_CUSTOMERS DESC;
+     ORDER BY MAX_CUSTOMERS DESC;
 	 
 Q22. What is order_total value of male customers who are belongs to Chennai and Happy customers?
      SELECT SUM(ORDER_TOTAL) AS TOTAL_ORDER
-	 FROM ORDERS O
-	 , CUSTOMERS C
-	 WHERE O.CUSTOMER_KEY = C.CUSTOMER_KEY
-	 AND C.GENDER = 'M'
-	 AND C.LOCATION = 'CHENNAI'
-	 AND C.REFERRED_OTHER_CUSTOMERS <> 0;
+     FROM ORDERS O
+     , CUSTOMERS C
+     WHERE O.CUSTOMER_KEY = C.CUSTOMER_KEY
+     AND C.GENDER = 'M'
+     AND C.LOCATION = 'CHENNAI'
+     AND C.REFERRED_OTHER_CUSTOMERS <> 0;
 
 Q23. Which month having maximum order value from male customers belongs to Chennai?
      SELECT TOP 1 MONTHS
@@ -236,9 +236,9 @@ Q23. Which month having maximum order value from male customers belongs to Chenn
 	       WHERE O.CUSTOMER_KEY = C.CUSTOMER_KEY
 	       AND C.GENDER ='M'
 	       AND C.LOCATION ='Chennai'
-		   GROUP BY  FORMAT(O.ORDER_DATE,'MMMM') 
+	       GROUP BY  FORMAT(O.ORDER_DATE,'MMMM') 
 	) AS SubQuery
-	ORDER BY TOTAL_ORDER DESC;
+     ORDER BY TOTAL_ORDER DESC;
 
 Q24. Prepare at least 5 additional analysis on your own? 
 ---A. Order Trends Over Time
@@ -292,31 +292,31 @@ Q24. Prepare at least 5 additional analysis on your own?
 
  Q26. Number of orders by month based on order status (Delivered vs. canceled vs. etc.)
       SELECT FORMAT(O.ORDER_DATE,'MMMM') AS MONTHS, O.ORDER_STATUS , COUNT(*) AS NUMBER_OF_ORDERS_BY_MONTHS 
-	  FROM ORDERS O,
-	  CUSTOMERS C
-	  WHERE O.CUSTOMER_KEY = C.CUSTOMER_KEY
-	  GROUP BY FORMAT(O.ORDER_DATE,'MMMM'), O.ORDER_STATUS
+      FROM ORDERS O,
+      CUSTOMERS C
+      WHERE O.CUSTOMER_KEY = C.CUSTOMER_KEY
+      GROUP BY FORMAT(O.ORDER_DATE,'MMMM'), O.ORDER_STATUS
 
 Q27. Number of orders by month based on delivery status
      SELECT FORMAT(O.ORDER_DATE,'MMMM') AS MONTHS, O.DELIVERY_STATUS
-	 FROM ORDERS O,
-	 CUSTOMERS C
-	 WHERE O.CUSTOMER_KEY = C.CUSTOMER_KEY
-	 GROUP BY FORMAT(O.ORDER_DATE,'MMMM'), O.DELIVERY_STATUS 
+     FROM ORDERS O,
+     CUSTOMERS C
+     WHERE O.CUSTOMER_KEY = C.CUSTOMER_KEY
+     GROUP BY FORMAT(O.ORDER_DATE,'MMMM'), O.DELIVERY_STATUS 
 
 Q28. Month-on-month growth in OrderCount and Revenue (from Nov’15 to July’16)
 
 -- Calculate order count and total revenue for each month
 WITH MonthlyData AS (
     SELECT YEAR(ORDER_DATE) AS OrderYear,
-           MONTH(ORDER_DATE) AS OrderMonth,
-           COUNT(*) AS OrderCount,
-           SUM(ORDER_TOTAL) AS TotalRevenue
+    MONTH(ORDER_DATE) AS OrderMonth,
+    COUNT(*) AS OrderCount,
+    SUM(ORDER_TOTAL) AS TotalRevenue
     FROM Orders
     WHERE ORDER_DATE >= '2015-11-01' 
-      AND ORDER_DATE < '2016-08-01'
+    AND ORDER_DATE < '2016-08-01'
     GROUP BY YEAR(ORDER_DATE), MONTH(ORDER_DATE)
-  --  ORDER BY OrderYear, OrderMonth
+--  ORDER BY OrderYear, OrderMonth
 ),
 -- Calculate Month-on-Month Growth
 MonthlyGrowth AS (
